@@ -9,13 +9,13 @@ module delta (
 
     // compares the difference between current data and previous against a threshold
 
-    wire [4:0] delta;
+    wire [4:0] diff;
 
     always @(*) begin
-        delta = data - prev;
+        diff = data - prev;
 
-        spike[1] = off_spike ? (delta < -threshold) : 0;
-        spike[0] = (delta > threshold) | spike[1]; 
+        spike[1] = off_spike ? (diff < -threshold) : 0;
+        spike[0] = (diff > threshold) | spike[1]; 
     end
 
 endmodule
