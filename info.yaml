@@ -28,17 +28,11 @@ documentation:
 
 # Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
-      Uses a set of registers to divide the clock, and then some combinational logic
-      to convert from binary to decimal for the display.
+      A spike is generated if the difference between the current and previous data inputs is greater than a specified input threshold. The design is meant to mimic the implementation of delta modulation in the [snnTorch](https://snntorch.readthedocs.io/en/latest/snntorch.spikegen.html#snntorch.spikegen.delta) python package.
 
-      Puts the bottom 8 bits of the counter on the bidirectional outputs.
+      All numerical inputs and outputs are signed 4-bit integers encoded using two's complement.
 
-      With all the inputs set to 0, the internal 24 bit compare is set to 10,000,000. This means the
-      counter will increment by one each second.
-
-      If any inputs are non zero, then the input will be used as an bits 11 to 18 of the 24 bit compare register.
-      Example: setting the inputs to 00010000 will program 16384 into the compare register.
-      With a 10MHz clock the counter will increment ~610 times per second.
+      The previous data register is made to be debug compatable with the ability to read the current value in the register and force the register to a specific value.
 
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   how_to_test:  |
