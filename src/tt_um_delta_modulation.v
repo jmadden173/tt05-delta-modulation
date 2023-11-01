@@ -72,6 +72,7 @@ module tt_um_jmadden173_delta_modulation (
     end
 
     delta delta(
+        .reset(reset),
         .data(data),
         .threshold(threshold),
         .prev(prev),

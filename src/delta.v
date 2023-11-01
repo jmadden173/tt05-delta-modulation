@@ -1,5 +1,6 @@
 
-module delta (    
+module delta (
+    input wire reset,
     input reg [3:0] data,
     input reg [3:0] prev,
     input reg [3:0] threshold,
@@ -12,6 +13,10 @@ module delta (
     reg [3:0] diff;
 
     always @(*) begin
+        if (reset) begin
+            diff = 4'b0000;
+        end
+
         diff = data - prev;
 
         spike[1] = off_spike ? (diff < -threshold) : 0;
