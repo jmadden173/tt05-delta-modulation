@@ -14,8 +14,8 @@ async def test_reset(dut):
     dut.rst_n.value = 0
     await ClockCycles(dut.clk, 10)
 
-    assert int(dut.threshold) == 0
-    assert int(dut.data) == 0
-    assert int(dut.prev) == 0
+    assert int(dut.threshold.value) == 0
+    assert int(dut.data.value) == 0
+    assert int(dut.prev.value) == 0
 
     dut.rst_n.value = 1
