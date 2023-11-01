@@ -28,7 +28,20 @@ module tb ();
     wire [7:0] uio_out;
     wire [7:0] uio_oe;
 
-    tt_um_seven_segment_seconds tt_um_seven_segment_seconds (
+
+    // utility wires
+    wire [3:0] threshold = ui_in[3:0];
+    wire [3:0] data = ui_in[7:4];
+
+    wire [1:0] spike = uo_out[1:0];
+    wire [3:0] prev = uo_out[7:4];
+
+    wire off_spike = uio_in[0];
+    wire load_prev = uio_in[1];
+    wire force_prev = uio_in[7:4];
+
+
+    tt_um_jmadden173_delta_modulation tt_um_jmadden173_delta_modulation (
     // include power ports for the Gate Level test
     `ifdef GL_TEST
         .VPWR( 1'b1),
