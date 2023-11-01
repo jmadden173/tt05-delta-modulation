@@ -12,10 +12,10 @@ module delta (
     wire [4:0] delta;
 
     always @(*) begin
-        assign delta = data - prev;
+        delta = data - prev;
 
-        assign spike[1] = off_spike : (delta < -threshold) ? 0;
-        assign spike[0] = (delta > threshold) | spike[1]; 
+        spike[1] = off_spike ? (delta < -threshold) : 0;
+        spike[0] = (delta > threshold) | spike[1]; 
     end
 
 endmodule
