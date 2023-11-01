@@ -14,12 +14,14 @@ module tt_um_jmadden173_delta_modulation (
     // Reset signal
     wire reset = ! rst_n;
 
-    reg [4:0] data;
-    reg [4:0] threshold;
+    // declarations
 
-    reg [4:0] prev;
+    reg [3:0] data;
+    reg [3:0] threshold;
 
-    wire [4:0] force_prev;
+    reg [3:0] prev;
+
+    wire [3:0] force_prev;
     
     wire [1:0] spike;
 
@@ -30,19 +32,23 @@ module tt_um_jmadden173_delta_modulation (
 
     // dedicated outputs
     // constant values for unused output
-    assign uo_out[7:2] = 5'b00000;
+    assign uo_out[7:4] = prev;
+    assign uo_out[3:2] = 2'b00;
     assign uo_out[1:0] = spike;
 
     // set bidirectional pin direction
-    // prev
     assign uio_oe[7:4] = 4'b0000;
-    // unused, set to low output
     assign uio_oe[3:2] = 2'b11;
-    assign uio_out[3:2] = 2'b00;
-    // parameters
     assign uio_oe[1:0] = 2'b00;
+
+    // zero bidirectional output levels
+    assign uio_out[7:0] = 8'b00000000; 
+
+    // assign parameter wires to input pins 
     assign load_prev = uio_in[1];
     assign off_spike = uio_in[0];
+    assign force_prev = uio_in[7:4];
+
 
     always @(posedge clk) begin
         // zero out reg on reset
