@@ -4,7 +4,7 @@ module delta (
     input reg [4:0] prev,
     input reg [4:0] threshold,
     input wire off_spike,
-    output wire spike[1:0]
+    output wire [1:0] spike
 );
 
     // compares the difference between current data and previous against a threshold
