@@ -41,8 +41,8 @@ module tt_um_jmadden173_delta_modulation (
     assign uio_out[3:2] = 2'b00;
     // parameters
     assign uio_oe[1:0] = 2'b00;
-    assign uio_in[1] = load_prev;
-    assign uio_in[0] = off_spike;
+    assign load_prev = uio_in[1];
+    assign off_spike = uio_in[0];
 
     always @(posedge clk) begin
         // zero out reg on reset
