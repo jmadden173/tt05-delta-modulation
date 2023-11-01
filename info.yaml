@@ -46,35 +46,35 @@ documentation:
       Experiment by changing the inputs to change the counting speed.
 
 # A description of what the inputs do (e.g. red button, SPI CLK, SPI MOSI, etc).
-  inputs:               
-    - compare bit 11
-    - compare bit 12
-    - compare bit 13
-    - compare bit 14
-    - compare bit 15
-    - compare bit 16
-    - compare bit 17
-    - compare bit 18
+  inputs:  
+    - input threshold bit 0
+    - input threshold bit 1
+    - input threshold bit 2
+    - input threshold bit 3
+    - input data bit 0
+    - input data bit 1
+    - input data bit 2
+    - input data bit 3
 # A description of what the outputs do (e.g. status LED, SPI MISO, etc)
   outputs:
-    - segment a
-    - segment b
-    - segment c
-    - segment d
-    - segment e
-    - segment f
-    - segment g
-    - dot
+    - spike bit 0
+    - spike bit 1
+    - nc, constant output low
+    - nc, constant output low
+    - reg prev bit 0
+    - reg prev bit 1
+    - reg prev bit 2
+    - reg prev bit 3
 # A description of what the bidirectional I/O pins do (e.g. I2C SDA, I2C SCL, etc)
   bidirectional:
-    - second counter bit 0
-    - second counter bit 1
-    - second counter bit 2
-    - second counter bit 3
-    - second counter bit 4
-    - second counter bit 5
-    - second counter bit 6
-    - second counter bit 7
+    - parameter off_spike
+    - input load_prev bit
+    - nc, constant output low
+    - nc, constant output low
+    - input force_prev bit 0
+    - input force_prev bit 1
+    - input force_prev bit 2
+    - input force_prev bit 3
 
 # The following fields are optional
   tag:          "snn, test"      # comma separated list of tags: test, encryption, experiment, clock, animation, utility, industrial, pwm, fpga, alu, microprocessor, risc, riscv, sensor, signal generator, fft, filter, music, bcd, sound, serial, timer, random number generator, calculator, decoder, counter, puzzle, multiplier, game, oscillator,
