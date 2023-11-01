@@ -9,7 +9,7 @@ module delta (
 
     // compares the difference between current data and previous against a threshold
 
-    wire delta[4:0];
+    wire [4:0] delta;
 
     always @(*) begin
         assign delta = data - prev;

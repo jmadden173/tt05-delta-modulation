@@ -14,14 +14,14 @@ module tt_um_jmadden173_delta_modulation (
     // Reset signal
     wire reset = ! rst_n;
 
-    reg data[4:0];
-    reg threshold[4:0];
+    reg [4:0] data;
+    reg [4:0] threshold;
 
-    reg prev[4:0];
+    reg [4:0] prev;
 
-    wire force_prev[4:0];
+    wire [4:0] force_prev;
     
-    wire spike[1:0];
+    wire [1:0] spike;
 
     wire load_prev;
     wire off_spike;
