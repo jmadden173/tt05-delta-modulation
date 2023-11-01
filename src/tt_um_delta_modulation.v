@@ -58,7 +58,7 @@ module tt_um_jmadden173_delta_modulation (
         threshold <= ui_in[3:0];
 
         // propogate prev
-        if load_prev begin
+        if (load_prev) begin
             prev <= force_prev;
         end else begin
             prev <= data;
