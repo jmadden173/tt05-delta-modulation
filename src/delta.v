@@ -19,8 +19,22 @@ module delta (
 
         diff = data - prev;
 
-        spike[1] = off_spike ? (diff < -threshold) : 0;
-        spike[0] = (diff > threshold) | spike[1]; 
+        // check if difference is above threshold
+        if (diff > threshold) begin
+            if (data > prev) begin
+                // on a "rising" input
+                spike = 2'b01;
+            end else if (data < prev) begin
+                // on a "falling" input
+                // only valid with off_spike
+                spike = off_spike ? 2'b10 : 2'b00;
+            end else begin
+                // when they are equal
+                spike = 2'b00; 
+            end
+        end else begin
+            spike = 2'b00;
+        end
     end
 
 endmodule
