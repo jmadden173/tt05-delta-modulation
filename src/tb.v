@@ -29,15 +29,23 @@ module tb ();
 
 
     // utility wires
-    wire [3:0] threshold = ui_in[3:0];
-    wire [3:0] data = ui_in[7:4];
+    wire [3:0] threshold;
+    assign ui_in[3:0] = threshold;
+
+    wire [3:0] data;
+    assign ui_in[7:4] = data;
 
     wire [1:0] spike = uo_out[1:0];
     wire [3:0] prev = uo_out[7:4];
 
-    wire off_spike = uio_in[0];
-    wire load_prev = uio_in[1];
-    wire force_prev = uio_in[7:4];
+    wire off_spike;
+    assign uio_in[0] = off_spike;
+
+    wire load_prev;
+    assign uio_in[1] = load_prev;
+
+    wire force_prev;
+    assign uio_in[7:4] = force_prev;
 
 
     tt_um_jmadden173_delta_modulation tt_um_jmadden173_delta_modulation (
