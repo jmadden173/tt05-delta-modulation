@@ -1,3 +1,5 @@
+from typing import Mapping, List
+
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, FallingEdge, Timer, ClockCycles
@@ -16,7 +18,6 @@ async def reset_dut(clk, rst_n, ui_in, uio_in, cycles=10) -> None:
     """
     
     # reset
-    rst_n._log.info("Resetting...")
     rst_n.value = 0 
     await ClockCycles(clk, 10)
 
@@ -27,7 +28,35 @@ async def reset_dut(clk, rst_n, ui_in, uio_in, cycles=10) -> None:
     
     await ClockCycles(clk, 10)
 
-    rst_n._log.info("Reset complete!")
+    rst_n._log.info("Reset")
+
+
+async def check_sequence(
+        clk,
+        data,
+        spike,
+        prev,
+        threshold,
+        seq: Mapping[str, List[int] | int],
+        cycles: int = 1
+    ) -> None:
+    """bla"""
+
+    # set threshold
+    threshold.value = 2
+
+    # create prev list two cycles later 
+    seq["prev"] = [0, 0] + seq["data"][:-2]
+
+    for d, p, s in zip(seq["data"], seq["prev"], seq["spikes"]):
+        data.value = d
+        await ClockCycles(clk, 1)
+
+        #dut._log.info(f"data: {dut.data.value}, prev: {dut.prev.value}")
+        #dut._log.info(f"data: {data}, prev: {prev}")
+
+        assert int(prev.value) == p
+        assert int(spike.value) == s
 
 
 @cocotb.test()
@@ -57,24 +86,26 @@ async def test_basic(dut):
     # reset
     await reset_dut(dut.clk, dut.rst_n, dut.ui_in, dut.uio_in)
 
-    # sequence of inputs
-    data_list = [1, 2, 5, 5, 5]
-    spike_list = [0, 0, 0, 1, 0]
+    sequence_list = {
+        "single spike" : {
+            "data": [1, 2, 5, 5, 5],
+            "spikes": [0, 0, 0, 1, 0],
+            "threshold": 2
+        },
+        "multiple concurrent spikes" : {
+            "data": [1, 4, 7, 10, 7, 4, 1, 0],
+            "spikes": [0, 0, 1, 1, 1, 0, 0, 0],
+            "threshold": 2
+        },
+        "multiple independent spikes" : {
+            "data": [0, 3, 0, 3, 0, 3, 0],
+            "spikes": [0, 0, 1, 0, 1, 0, 1],
+            "threshold": 2
+        }
+    }
 
-    # create prev list two cycles later 
-    prev_list = [0, 0] + data_list[:-2]
-
-    # set threshold 
-    dut.threshold.value = 2
-
-    for data, prev, spike in zip(data_list, prev_list, spike_list):
-        dut.data.value = data
-        await ClockCycles(dut.clk, 1)
-
-        #dut._log.info(f"data: {dut.data.value}, prev: {dut.prev.value}")
-        #dut._log.info(f"data: {data}, prev: {prev}")
-
-        assert int(dut.spike.value) == spike
-        assert int(dut.prev.value) == prev
-
-    await ClockCycles(dut.clk, 10)
+    for name, seq in sequence_list.items():
+        dut._log.info(f"Testing {name} sequence")
+        await check_sequence(dut.clk, dut.data, dut.spike, dut.prev, dut.threshold, seq)
+        await ClockCycles(dut.clk, 10)
+        await reset_dut(dut.clk, dut.rst_n, dut.ui_in, dut.uio_in)
