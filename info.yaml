@@ -28,16 +28,20 @@ documentation:
 
 # Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
-      A spike is generated if the difference between the current and previous data inputs is greater than a specified input threshold. The design is meant to mimic the implementation of delta modulation in the [snnTorch](https://snntorch.readthedocs.io/en/latest/snntorch.spikegen.html#snntorch.spikegen.delta) python package.
+      A spike is generated if the difference between the current and previous data inputs is greater than a specified input threshold. The design is meant to mimic the implementation of delta modulation in the [snnTorch](https://snntorch.readthedocs.io/en/latest/snntorch.spikegen.html#snntorch.spikegen.delta) python package. Each clock cycle is treated as an input/output, therefore there can be consecutive spikes that appear to be constantly high.
 
-      All numerical inputs and outputs are signed 4-bit integers encoded using two's complement.
+      The input parameter, `off_spike`, enables spike generation when negative threshold is exceeded. A negative spike is represented by `spike[1] = 0`. A positive spike is represented by `spike[0] = 1`.
 
-      The previous data register is made to be debug compatable with the ability to read the current value in the register and force the register to a specific value.
+      All numerical inputs and outputs are unsigned 4-bit integers. You are able to (1) input the `data` value, the input (2) the `threshold` for a spike to be generated, and (3) a value for the previous register for debugging.
+
+      The previous data register is included to be facilitate debugging with the ability to read the current value in the register and force the register to a specific value.
 
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   how_to_test:  |
-      After reset, the counter should increase by one every second with a 10MHz input clock.
-      Experiment by changing the inputs to change the counting speed.
+      The module is intended to have a digital input, such as an ADC with a parallel output that is directly fed into the `data` input with a shared `clk` signal. The `threshold` is meant to be tied to a constant value. The module outputs through `spikes` net.
+
+      For simpler testing, the input does not need to be matched to the `clk`. With the `threshold` set, `data` can be changed and spikes can be viewed on an oscilloscope.
+
 
 # A description of what the inputs do (e.g. red button, SPI CLK, SPI MOSI, etc).
   inputs:  
