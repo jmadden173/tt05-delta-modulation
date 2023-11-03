@@ -17,7 +17,14 @@ module delta (
             diff = 4'b0000;
         end
 
-        diff = data - prev;
+        // calculate absolute difference
+        if (data > prev) begin
+            diff = data - prev;
+        end else if (data < prev) begin
+            diff = prev - data;
+        end else begin
+            diff = 0;
+        end
 
         // check if difference is above threshold
         if (diff > threshold) begin
