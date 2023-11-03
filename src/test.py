@@ -1,4 +1,4 @@
-from typing import Mapping, List
+from typing import Mapping, List, Union
 
 import cocotb
 from cocotb.clock import Clock
@@ -37,7 +37,7 @@ async def check_sequence(
         spike,
         prev,
         threshold,
-        seq: Mapping[str, List[int] | int],
+        seq: Mapping[str, Union[List[int], int]],
         cycles: int = 1
     ) -> None:
     """bla"""
