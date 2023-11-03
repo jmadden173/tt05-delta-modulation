@@ -27,6 +27,8 @@ async def reset_dut(clk, rst_n, *args, cycles: int = 10) -> None:
 
     await ClockCycles(clk, cycles)
 
+    rst_n.value = 1
+
     rst_n._log.info("Reset")
 
 
@@ -151,3 +153,28 @@ async def test_off_spike(dut):
         await check_sequence(dut.clk, dut.data, dut.spike, dut.prev, dut.threshold, seq)
         await ClockCycles(dut.clk, 10)
         await reset_dut(dut.clk, dut.rst_n, dut.data, dut.prev, dut.threshold, dut.off_spike, dut.load_prev, dut.force_prev)
+
+
+@cocotb.test()
+async def test_load_prev(dut):
+    """Tests that a previous value can be loaded into the registers"""
+
+    dut._log.info("start")
+    clock = Clock(dut.clk, 10, units="us")
+    cocotb.start_soon(clock.start())
+
+    # reset
+    await reset_dut(dut.clk, dut.rst_n, dut.data, dut.prev, dut.threshold, dut.off_spike, dut.load_prev, dut.force_prev)
+
+    # force prev to 0b1111
+    dut.load_prev.value = 1
+    dut.force_prev.value = 2
+    # set data 
+    dut.data.value = 4
+    # set threhold
+    dut.threshold.value = 1
+
+    # need to wait two clock cycles 
+    await ClockCycles(dut.clk, 2)
+
+    assert int(dut.spike.value) == 1

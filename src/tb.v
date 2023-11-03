@@ -44,7 +44,7 @@ module tb ();
     wire load_prev;
     assign uio_in[1] = load_prev;
 
-    wire force_prev;
+    wire [3:0] force_prev;
     assign uio_in[7:4] = force_prev;
 
 
